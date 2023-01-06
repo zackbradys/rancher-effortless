@@ -1,11 +1,11 @@
-# Rancher Federal Offline Install
+# Rancher Federal Effortless Rancher Install
 
 #### Zack Brady, Field Engineer, Rancher Government Solutions (RGS)
 #### [@zackbradys](https://twitter.com/zackbradys) - zack.brady@rancherfederal.com - https://rancher.com/government
 
 ![rancher-long-banner](/images/rgs-banner-rounded.png)
 
-### Welcome to the Rancher Federal Offline Install Guide
+### Welcome to the Rancher Federal Rancher Installation Guide
 ### ... for the Core Rancher Stack!!
 
 - RKE2 (Kubernetes Engine) - [learn more](https://www.rancher.com/products/rke)
