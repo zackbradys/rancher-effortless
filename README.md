@@ -1,19 +1,19 @@
-# Rancher Federal Effortless Rancher Install
+# Effortless Rancher Install
 
 #### Zack Brady, Field Engineer, Rancher Government Solutions (RGS)
 #### [@zackbradys](https://twitter.com/zackbradys) - zack.brady@rancherfederal.com - https://rancher.com/government
 
 ![rancher-long-banner](/images/rgs-banner-rounded.png)
 
-### Welcome to the Rancher Federal Rancher Installation Guide
-### ... for the Core Rancher Stack!!
+## Welcome to the Effortless Rancher Installation Guide
+## ... for the Core Rancher Stack!!
 
-- RKE2 (Kubernetes Engine) - [learn more](https://www.rancher.com/products/rke)
-- Rancher MCM (Cluster Management) - [learn more](https://www.rancher.com/products/rancher)
-- Longhorn (Storage) - [learn more](https://www.rancher.com/products/longhorn)
-- Neuvector (Security) - [learn more](https://ranchergovernment.com/neuvector)
+- RKE2 (Kubernetes Engine) - [click learn more](https://www.rancher.com/products/rke)
+- Rancher MCM (Cluster Management) - [click to learn more](https://www.rancher.com/products/rancher)
+- Longhorn (Storage) - [click to learn more](https://www.rancher.com/products/longhorn)
+- Neuvector (Security) - [click to learn more](https://ranchergovernment.com/neuvector)
+- and various minor tools/dependencies (more info below)
 
-more coming soon
 
 ## Table of Contents
 
