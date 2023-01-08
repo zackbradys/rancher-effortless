@@ -5,8 +5,8 @@
 
 ![rancher-long-banner](/images/rgs-banner-rounded.png)
 
-## Welcome to the Effortless Rancher Installation Guide
-## ... for the Core Rancher Stack!!
+### Welcome to the Effortless Rancher Installation Guide
+### ... for the Core Rancher Stack!!
 
 - RKE2 (Kubernetes Engine) - [click learn more](https://www.rancher.com/products/rke)
 - Rancher MCM (Cluster Management) - [click to learn more](https://www.rancher.com/products/rancher)
