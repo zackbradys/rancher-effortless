@@ -205,9 +205,9 @@ helm repo update
 
 It should look like this:
 
-![rancher-](/images/.png)
+![rancher-helm-repo-status](/images/rancher-helm-repo-status.png)
 
-Now let's install Cert Manager and the Rancher Manager with the following commands:
+Now let's install Cert Manager with the following commands:
 
 ```bash
 ### server(s): rke2-cp-01
@@ -215,13 +215,28 @@ Now let's install Cert Manager and the Rancher Manager with the following comman
 kubectl create namespace cert-manager
 helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true 
 
+### Wait for the rollout
+sleep 30
+
 ### Verify the status of Cert Manager
 kubectl get pods --namespace cert-manager
+```
 
+It should look like this:
+
+![rancher-cert-manager-status](/images/rancher-cert-manager-status.png)
+
+Now let's install the Rancher Manager with the following commands:
+
+```bash
+### server(s): rke2-cp-01
 ### Create the Rancher Namespace and Install Rancher
 ### sslip.io is a DNS provider that converts an ip address to a hostname
 kubectl create namespace cattle-system
 helm upgrade -i rancher rancher-latest/rancher --namespace cattle-system --set bootstrapPassword=rancherSecurePassword --set hostname=rancher.10.0.0.15.sslip.io
+
+### Wait for the rollout
+sleep 60
 
 ### Verify the status of the Rancher Manager
 kubectl get pods --namespace cattle-system
@@ -229,7 +244,7 @@ kubectl get pods --namespace cattle-system
 
 It should look like this:
 
-![rancher-](/images/.png)
+![rancher-rancher-manager-status](/images/rancher-rancher-manager-status.png)
 
 ### Exploring the Rancher Manager
 
@@ -237,11 +252,13 @@ Once all the pods show as `Running` in the `cattle-system` namespace, you can ac
 
 For my deployment, I will be using `https://rancher.10.0.0.15.sslip.io` to access the Rancher Manager. It should look like this:
 
-![rancher-](/images/.png)
+![rancher-rancher-manager-bootstrap](/images/rancher-rancher-manager-bootstrap.png)
+
+![rancher-rancher-manager-terms](/images/rancher-rancher-manager-terms.png)
 
 You should now see the Rancher Manager asking for a password that we set during installation. For my deployment, I will be using `rancherSecurePassword`. You will also have to verify the Rancher Manager URL and accept the Terms and Conditions. Once that is completed... It should look like this:
 
-![rancher-](/images/.png)
+![rancher-rancher-manager-home](/images/rancher-rancher-manager-home.png)
 
 You now have the Rancher Multi Cluster Manager sucessfully deployed on your RKE2 Kubernetes Cluster!!! Remember there are many ways to configure the Rancher Manager and this was only a minimal installation. If you would like to see more ways to configure it, please check out the [rancher manager docs](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#docusaurus_skipToContent_fallback). Feel free to explore everything you are able to do inside of the Rancher Manager, or we can move onto the next step of installing [Rancher Longhorn](https://www.rancher.com/products/longhorn).
 
