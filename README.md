@@ -12,9 +12,14 @@ contact: zack.brady@rancherfederal.com
 * [About Me](#about-me)
 * [Introduction](#introduction)
 * [Prerequisites](#prerequisites)
-* [Installation and Configuration](#installation-and-configuration)
-* [Rancher Applications](#rancher-applications)
-* [Conclusion](#conclusion)
+* [Infrastructure](#infrastructure)
+* [RKE2 Configuration](#rke2-configuration)
+  * [RKE2 Control Node](#rke2-control-node)
+  * [RKE2 Worker Nodes])(#rke2-worker-nodes)
+* [Rancher Configuration](#rancher-configuration)
+* [Longhorn Configuration](#longhorn-configuration)
+* [NeuVector Configuration](#neuvector-configuration)
+* [Final Thoughts](#final-thoughts)
 
 
 ## About Me
@@ -42,20 +47,35 @@ In this deployment guide, we will be installing the entire Rancher Stack to incl
 
 ## Prerequisites
 
-...
+* Three (3) Internet Connected Linux Servers
+  * Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems)!
+* Terminal Utility (Terminal, VSCode, Termius etc...)
 
 
-## Installation and Configuration
-
-...
+## Infrastructure
 
 
-## Rancher Applications
-
-...
 
 
-## Conclusion
+## RKE2 Configuration
 
 
-...
+
+
+## Rancher Configuration
+
+
+
+
+## Longhorn Configuration
+
+
+
+
+## NeuVector Configuration
+
+
+
+
+## Final Thoughts
+
