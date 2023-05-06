@@ -44,7 +44,7 @@ In this deployment guide, we will be installing the entire Rancher Stack to incl
 
 ## Infrastructure
 
-For this deployment and installation, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as their is network connectivity between them. Here's a list of our [officially supported operating systems](https://docs.rke2.io/install/requirements#operating-systems).
+For this deployment and installation, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [officially supported operating systems](https://docs.rke2.io/install/requirements#operating-systems).
 
 In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`. If you would like to see my guide for an airgapped/offline installation, please check out my guide [here](https://github.com/zackbradys/rancher-offline).
 
@@ -59,12 +59,13 @@ Let's run the following commands on each of the nodes to ensure they have the ne
 *Note: These commands are specific to Rocky Linux 9.1*
 
 ```bash
+### rke2-cp-01, rke2-wk-01, and rke2-wk-02
 ### Install Packages
 yum install -y zip zstd tree jq cryptsetup
 
 yum --setopt=tsflags=noscripts install -y nfs-utils
 
-yum --setopt=tsflags=noscripts install -y iscsi-initiator-utils && echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl -q enable iscsid && systemctl start iscsid
+yum --setopt=tsflags=noscripts install -y iscsi-initiator-utils && echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable iscsid && systemctl start iscsid
 
 yum update -y && yum clean all
 ```
@@ -72,7 +73,7 @@ yum update -y && yum clean all
 
 ## RKE2 Configuration
 
-In order to configure and install Rancher RKE2, you need to have Control/Server nodes and Worker/Agent nodes. We will start by setting up the Control/Server node and then setting up the Worker/Agent nodes. There are many ways to accomplish this and this guide is meant for an effortless and simple installation, please review the [rke2 docs](https://docs.rke2.io) for more information.
+In order to configure and install Rancher RKE2, you need to have Control/Server nodes and Worker/Agent nodes. We will start by setting up the Control/Server node and then setting up the Worker/Agent nodes. There are many ways to accomplish this and this guide is meant for an effortless and minimal installation, please review the [rke2 docs](https://docs.rke2.io) for more information.
 
 
 ### RKE2 Control Node
@@ -165,6 +166,7 @@ systemctl enable rke2-agent.service && systemctl start rke2-agent.service
 Let's head back to the `rke2-cp-01` server and verify the worker/agent nodes sucessfully joined the cluster.
 
 ```bash
+### rke2-cp-01
 ### Verify status with kubectl
 kubectl get nodes -o wide
 ```
@@ -178,7 +180,72 @@ Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluste
 
 ## Rancher Configuration
 
+When most folks are starting their Kubernetes journey and specifically their journey with Rancher Kubernetes, there is some confusion about our products. Rancher RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing RKE2!
 
+Let's get started with installing the Rancher Manager! In order to get the bits required to configure and install it, we need to use the [Helm CLI](https://helm.sh) for package management and then grab [Cert Manager](https://cert-manager.io) and the [Rancher Manager](https://rancher.io). Let's use `ssh` with `root` to access the `rke2-cp-01` server and run the following commands:
+
+```bash
+### rke2-cp-01
+### Download and Install Helm CLI
+mkdir -p /opt/rancher/helm
+cd /opt/rancher/helm
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh && ./get_helm.sh
+mv /usr/local/bin/helm /usr/bin/helm
+```
+
+Now let's add the Helm Repositories for Cert Manager and the Rancher Manager!
+
+```bash
+### rke2-cp-01
+### Add and update the helm repos
+helm repo add jetstack https://charts.jetstack.io 
+helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+helm repo update
+```
+
+It should look like this:
+
+**IMAGE**
+
+Now let's install Cert Manager and the Rancher Manager with the following commands:
+
+```bash
+### rke2-cp-01
+### Create the Cert Manager Namespace and Install Cert Manager
+kubectl create namespace cert-manager
+helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true 
+
+### Verify the status of Cert Manager
+kubectl get pods --namespace cert-manager
+
+### Create the Rancher Namespace and Install Rancher
+### sslip.io is a DNS provider that converts an ip address to a hostname
+kubectl create namespace cattle-system
+helm upgrade -i rancher rancher-latest/rancher --namespace cattle-system --set bootstrapPassword=rancherSecurePassword --set hostname=10.0.0.15.sslip.io
+
+### Verify the status of the Rancher Manager
+kubectl get pods --namespace cattle-system
+```
+
+It should look like this:
+
+**IMAGE**
+
+### Exploring the Rancher Manager
+
+Once all the pods show as `Running` in the `cattle-system` namespace, you can access the Rancher Manager! Since we are using `sslip.io` as our Hostname/DNS, we do not need to configure anything else to access the Rancher Manager. Let's head over the domain name and take a look at the Rancher Manager! 
+
+For my deployment, I will be using `https://10.0.0.15.sslip.io` to access the Rancher Manager. It should look like this:
+
+**IMAGE**
+
+You should now see the Rancher Manager asking for a password that we set during installation. For my deployment, I will be using `rancherSecurePassword`. You will also have to verify the Rancher Manager URL and accept the Terms and Conditions. Once that is completed... It should look like this:
+
+**IMAGE**
+
+You now have the Rancher Multi Cluster Manager sucessfully deployed on your RKE2 Kubernetes Cluster!!! Remember there are many many ways to configure the Rancher Manager and this was only a minimal installation. Feel free to explore everything you are able to do inside of the Rancher Manager, or we can move onto the next step of installing [Rancher Longhorn](https://www.rancher.com/products/longhorn).
 
 ## Longhorn Configuration
 
