@@ -39,21 +39,20 @@ In this deployment guide, we will be installing the entire Rancher Stack to incl
 ### Prerequisites
 
 * Three (3) Internet Connected Linux Servers
-  * Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems)
 * Terminal Utility (Terminal, VSCode, Termius etc...)
 
 
 ## Infrastructure
 
-For this deployment and installation, we need three linux servers to be able to get everything up and running. I will be using three Rocky Linux 9.1 machines, located on the same network. Any linux distribution should work perfectly fine, as long as their is network connectivity between them.
+For this deployment and installation, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as their is network connectivity between them. Here's a list of our [officially supported operating systems](https://docs.rke2.io/install/requirements#operating-systems).
 
 In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`. If you would like to see my guide for an airgapped/offline installation, please check out my guide [here](https://github.com/zackbradys/rancher-offline).
 
 | hostname | ip address | cores | memory | storage |
 | :----: | :----: | :----: | :----: | :----: |
-| `rke2-cp-01` | `10.0.0.15` | `4 cores` | `8 gbs` | `128 gbs` | 
-| `rke2-wk-01` | `10.0.0.16` | `4 cores` | `8 gbs` | `128 gbs` |
-| `rke2-wk-02` | `10.0.0.17` | `4 cores` | `8 gbs` | `128 gbs` |
+| `rke2-cp-01` | `10.0.0.15` | `4 cores` | `8 Gi` | `128 Gi` | 
+| `rke2-wk-01` | `10.0.0.16` | `4 cores` | `8 Gi` | `128 Gi` |
+| `rke2-wk-02` | `10.0.0.17` | `4 cores` | `8 Gi` | `128 Gi` |
 
 Let's run the following commands on each of the nodes to ensure they have the neccessary packages. 
 
@@ -74,6 +73,7 @@ yum update -y && yum clean all
 ## RKE2 Configuration
 
 In order to configure and install Rancher RKE2, you need to have Control/Server nodes and Worker/Agent nodes. We will start by setting up the Control/Server node and then setting up the Worker/Agent nodes. There are many ways to accomplish this and this guide is meant for an effortless and simple installation, please review the [rke2 docs](https://docs.rke2.io) for more information.
+
 
 ### RKE2 Control Node
 
@@ -140,7 +140,7 @@ Again, let's start by configuring the RKE2 Worker/Agent Nodes, by adding the con
 If you woud like to see more ways to configure the RKE2 Worker/Agent, please check out the [rke2 agent docs](https://docs.rke2.io/reference/linux_agent_config).
 
 ```bash
-### ke2-wk-01 and rke2-wk-02
+### rke2-wk-01 and rke2-wk-02
 ### Create the RKE2 Directory
 mkdir -p /etc/rancher/rke2/ 
 
