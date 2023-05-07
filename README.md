@@ -355,7 +355,7 @@ You should now see NeuVector asking for a the default username and password. The
 
 ![rancher-neuvector-home](/images/rancher-neuvector-home.png)
 
-You now have Rancher NeuVector successfully deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager and Rancher Longhorn!! Feel free to explore the NeuVector console and run vulneriablity scans, investigate cluster assets, or check out your network activity. Here is where we would usually recommend to deploy a few test applications to see the true power behind Rancher. For now, we're going to move onto our final thoughts.
+You now have Rancher NeuVector deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager and Rancher Longhorn!! Feel free to explore the NeuVector and run vulneriablity scans, investigate cluster assets, or check out your network activity. Here is where we would usually recommend to deploy a few test applications to see the true power behind Rancher. For now, we're going to move onto our final thoughts.
 
 ## Final Thoughts
 
