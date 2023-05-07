@@ -260,15 +260,52 @@ You should now see the Rancher Manager asking for a password that we set during 
 
 ![rancher-rancher-manager-home](/images/rancher-rancher-manager-home.png)
 
-You now have the Rancher Multi Cluster Manager sucessfully deployed on your RKE2 Kubernetes Cluster!!! Remember there are many ways to configure the Rancher Manager and this was only a minimal installation. If you would like to see more ways to configure it, please check out the [rancher manager docs](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options#docusaurus_skipToContent_fallback). Feel free to explore everything you are able to do inside of the Rancher Manager, or we can move onto the next step of installing [Rancher Longhorn](https://www.rancher.com/products/longhorn).
+You now have the Rancher Manager sucessfully deployed on our RKE2 Kubernetes Cluster!!! Remember there are many ways to configure and this was only a minimal installation. If you would like to see more ways to configure, please check out the [rancher manager docs](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/helm-chart-options). Feel free to explore everything you are able to do inside of the Rancher Manager, or we can move onto the next step of installing [Rancher Longhorn](https://www.rancher.com/products/longhorn).
 
 ## Rancher Longhorn
 
+Let's move up the stack and start thinking about storage. Rancher Longhorn provides cloud native and highly available persistent block storage for Kubernetes, with backups and disaster recovery. In order to install Longhorn onto our cluster, we pretty much follow the same steps as we did for Cert Manager and the Rancher Manager.
 
+Let's add the Helm Repository for Longhorn!
 
-## Rancher NeuVector
+```bash
+### server(s): rke2-cp-01
+### Add and update the helm repository
+helm repo add longhorn https://charts.longhorn.io
+helm repo update
+```
 
+It should look like this:
 
+![rancher-helm-repo-status-longhorn](/images/rancher-helm-repo-status-longhorn.png)
+
+Now let's install Longhorn with the following commands:
+
+```bash
+### server(s): rke2-cp-01
+### Create the Longhorn Namespace and Install Longhorn
+kubectl create namespace longhorn-system
+helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --set ingress.enabled=true --set ingress.host=longhorn.10.0.0.15.sslip.io
+
+### Wait for the rollout
+sleep 30
+
+### Verify the status of Longhorn
+kubectl get pods --namespace longhorn-system
+```
+
+It should look like this:
+
+![rancher-longhorn-status](/images/rancher-longhorn-status.png)
+
+### Exploring Rancher Longhorn
+Once all the pods show as `Running` in the `longhorn-system` namespace, you can access Rancher Longhorn! Just like the Rancher Manager, we are utilizing `sslip.io`, so there is no additional configuration required to access Longhorn. Let's head over to the domain name.
+
+For my deployment, I will be using `https://longhorn.10.0.0.15.sslip.io` to access Rancher Longhorn. It should look like this:
+
+![rancher-longhorn-home](/images/rancher-longhorn-home.png)
+
+You now have Rancher Longhorn successfully deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager!! Feel free to explore the Longhorn dashboard and see how easy it is to manage your volumes, backup to an S3 Bucket, or setup cross-cluster disaster recovery. Once you're ready, let's move onto [Rancher NeuVector](https://ranchergovernment.com/neuvector).
 
 ## Final Thoughts
 
