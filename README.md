@@ -47,7 +47,7 @@ In this deployment guide, we will be installing the entire Rancher Stack to incl
 
 For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`. 
 
-If you would like to see my guide for an airgapped/offline installation, please check out my guide [here](https://github.com/zackbradys/rancher-offline). If you would like to see a good Reference Architecture for the complete Rancher Stack, please check out my co-workers guide [here](https://github.com/clemenko/rancher-ref-arch). Thank you [@clemenko](https://github.com/clemenko)!
+If you would like to see my guide for an airgapped/offline installation, please check out my guide [here](https://github.com/zackbradys/rancher-offline). If you would like to see a great Reference Architecture, please check out my co-workers guide [here](https://github.com/clemenko/rancher-ref-arch). Thank you [@clemenko](https://github.com/clemenko)!
 
 Here's an overview the architecture that we will be using for this deployment guide:
 
