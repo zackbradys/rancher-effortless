@@ -7,7 +7,7 @@
 * [About Me](#about-me)
 * [Introduction](#introduction)
 * [Infrastructure](#infrastructure)
-* [RKE2 Configuration](#rke2-configuration)
+* [Rancher RKE2](#rancher-rke2)
 * [Rancher Multi Cluster Manager](#rancher-multi-cluster-manager)
 * [Rancher Longhorn](#rancher-longhorn)
 * [Rancher NeuVector](#rancher-neuvector)
@@ -70,7 +70,7 @@ yum update -y && yum clean all
 ```
 
 
-## RKE2 Configuration
+## Rancher RKE2
 
 In order to configure and install Rancher RKE2, you need to have Control/Server nodes and Worker/Agent nodes. We will start by setting up the Control/Server node and then setting up the Worker/Agent nodes. There are many ways to accomplish this and this guide is meant for an effortless and minimal installation, please review the [rke2 docs](https://docs.rke2.io) for more information.
 
