@@ -363,4 +363,4 @@ In a few fairly easy steps and less than an hour, you have the core Rancher Stac
 
 If you have any issues with this deployment guide, please submit an issue or merge request. 
 
-If you would like to learn more or get in touch with me, please contact me at zack.brady@rancherfederal.com!
+If you would like to learn more or get in touch with me, please contact me at zack@zackbrady.com!
