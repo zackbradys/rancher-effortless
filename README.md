@@ -2,7 +2,6 @@
 
 ![rancher-long-banner](/images/rgs-banner-rounded.png)
 
-
 ### Table of Contents
 * [About Me](#about-me)
 * [Introduction](#introduction)
@@ -13,9 +12,7 @@
 * [Rancher NeuVector](#rancher-neuvector)
 * [Final Thoughts](#final-thoughts)
 
-
 ## About Me
-
 A little bit about me, my history, and what I've done in the industry. 
 - DOD/IC Contractor
 - U.S. Military Veteran
@@ -23,11 +20,9 @@ A little bit about me, my history, and what I've done in the industry.
 - Built and Exited a Digital Firm
 - Active Volunteer Firefighter/EMT
 
-
 ## Introduction
 
 ### Welcome to the Effortless Rancher Installation Guide
-
 In this deployment guide, we will be installing the entire Rancher Stack to include the following products:
 
 - RKE2 (Kubernetes Engine) - [click learn more](https://www.rancher.com/products/rke)
@@ -36,15 +31,11 @@ In this deployment guide, we will be installing the entire Rancher Stack to incl
 - Neuvector (Security) - [click to learn more](https://ranchergovernment.com/neuvector)
 - and various minor tools/dependencies (more info below)
 
-
 ### Prerequisites
-
 * Three (3) Internet Connected Linux Servers
 * Terminal Utility (Terminal, VSCode, Termius etc...)
 
-
 ## Infrastructure
-
 For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`. 
 
 If you would like to see my guide for an airgapped/offline installation, please check out my guide [here](https://github.com/zackbradys/rancher-offline). If you would like to see a great Reference Architecture, please check out my co-workers guide [here](https://github.com/clemenko/rancher-ref-arch). Thank you [@clemenko](https://github.com/clemenko)!
@@ -66,16 +57,13 @@ yum --setopt=tsflags=noscripts install -y nfs-utils
 
 yum --setopt=tsflags=noscripts install -y iscsi-initiator-utils && echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
 
-yum update -y && yum clean all
+yum install -y http://dl.rockylinux.org/pub/rocky/9.1/AppStream/x86_64/os/Packages/c/container-selinux-2.189.0-1.el9.noarch.rpm
 ```
 
-
 ## Rancher RKE2
-
 In order to configure and install Rancher RKE2, you need to have Control/Server nodes and Worker/Agent nodes. We will start by setting up the Control/Server node and then setting up the Worker/Agent nodes. There are many ways to accomplish this and this guide is meant for an effortless and minimal installation, please review the [rke2 docs](https://docs.rke2.io) for more information.
 
 ### RKE2 Control Node
-
 Let's start by configuring the RKE2 Control/Server Node, by adding the configuration file. Since we are completing a effortless installation, we are only adding the RKE2 Token configuration option. I'm using `ssh` with `root` to access the `rke2-cp-01` server.
 
 If you would like to see more ways to configure the RKE2 Control/Server, please check out the [rke2 server docs](https://docs.rke2.io/reference/server_config).
@@ -130,7 +118,6 @@ It should look like this:
 ![rancher-rke2-cp-01-kubectl](/images/rancher-rke2-cp-01-kubectl.png)
 
 ### RKE2 Worker Nodes
-
 Again, let's start by configuring the RKE2 Worker/Agent Nodes, by adding the configuration file. Since we are completing a effortless installation, we are only adding the RKE2 Server and RKE2 Token configuration options. I'm using `ssh` with `root` to access the `rke2-wk-01` and `rke2-wk-02` servers.
 
 *Note: You need to complete each of these steps on each worker/agent server.*
@@ -176,7 +163,6 @@ Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluste
 
 
 ## Rancher Multi Cluster Manager
-
 When most folks are starting their Kubernetes journey and specifically their journey with Rancher Kubernetes, there is some confusion about our products. Rancher RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing RKE2!
 
 Let's get started with installing the Rancher Manager! In order to get the bits required to configure and install it, we need to use the [Helm CLI](https://helm.sh) for package management and then grab [Cert Manager](https://cert-manager.io) and the [Rancher Manager](https://rancher.io). Let's use `ssh` with `root` to access the `rke2-cp-01` server and run the following commands:
@@ -246,7 +232,6 @@ It should look like this:
 ![rancher-rancher-manager-status](/images/rancher-rancher-manager-status.png)
 
 ### Exploring the Rancher Manager
-
 Once all the pods show as `Running` in the `cattle-system` namespace, you can access the Rancher Manager! Since we are using `sslip.io` as our Hostname/DNS, we do not need to configure anything else to access the Rancher Manager. Let's head over the domain name and take a look at the Rancher Manager! 
 
 For my deployment, I will be using `https://rancher.10.0.0.15.sslip.io` to access the Rancher Manager. It should look like this:
@@ -261,9 +246,7 @@ You should now see the Rancher Manager asking for a password that we set during 
 
 You now have the Rancher Manager sucessfully deployed on our RKE2 Kubernetes Cluster!!! Remember there are many ways to configure and this was only a minimal installation. Feel free to explore everything you are able to do inside of the Rancher Manager, or we can move onto the next step of installing [Rancher Longhorn](https://www.rancher.com/products/longhorn).
 
-
 ## Rancher Longhorn
-
 Let's move up the stack and start thinking about storage. Rancher Longhorn provides cloud native and highly available persistent block storage for Kubernetes, with backups and disaster recovery. In order to install Longhorn onto our cluster, we pretty much follow the same steps as we did for Cert Manager and the Rancher Manager.
 
 Let's add the Helm Repository for Longhorn!
@@ -309,7 +292,6 @@ You now have Rancher Longhorn successfully deployed on our RKE2 Kuberenetes Clus
 
 
 ## Rancher NeuVector
-
 Let's add the Helm Repository for NeuVector!
 
 ```bash
@@ -344,7 +326,6 @@ It should look like this:
 ![rancher-neuvector-status](/images/rancher-neuvector-status.png)
 
 ### Exploring Rancher NeuVector
-
 Once all the pods show as `Running` in the `cattle-neuvector-system` namespace, you can access Rancher NeuVector! Just like the Rancher Manager and Rancher Longhorn, we are utilizing `sslip.io`, so there is no additional configuration required to access NeuVector. Let's head over to the domain name.
 
 For my deployment, I will be using `https://neuvector.10.0.0.15.sslip.io` to access Rancher NeuVecutor. It should look like this:
@@ -358,9 +339,6 @@ You should now see NeuVector asking for a the default username and password. The
 You now have Rancher NeuVector deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager and Rancher Longhorn!! Feel free to explore the NeuVector and run vulneriablity scans, investigate cluster assets, or check out your network activity. Here is where we would usually recommend to deploy a few test applications to see the true power behind Rancher. For now, we're going to move onto our final thoughts.
 
 ## Final Thoughts
-
 In a few fairly easy steps and less than an hour, you have the core Rancher Stack deployed out and ready for use. I would say that statement alone is a very powerful considering the alternatives out there.
 
-If you have any issues with this deployment guide, please submit an issue or merge request. 
-
-If you would like to learn more or get in touch with me, please contact me at zack@zackbrady.com!
+If you have any issues with this deployment guide, please submit an issue or merge request. If you would like to learn more or get in touch with me, please contact me at zbrady@zackbrady.com!
