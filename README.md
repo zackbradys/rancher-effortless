@@ -57,7 +57,7 @@ yum --setopt=tsflags=noscripts install -y nfs-utils
 
 yum --setopt=tsflags=noscripts install -y iscsi-initiator-utils && echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
 
-yum install -y http://dl.rockylinux.org/pub/rocky/9.1/AppStream/x86_64/os/Packages/c/container-selinux-2.189.0-1.el9.noarch.rpm
+yum update -y && yum clean all
 ```
 
 ## Rancher RKE2
@@ -84,7 +84,7 @@ Now that the configuration file is completed, let's install and start the RKE2 C
 ```bash
 ### server(s): rke2-cp-01
 ### Download the RKE2 Control/Server Binary
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.24.13 INSTALL_RKE2_TYPE=server sh - 
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.24 INSTALL_RKE2_TYPE=server sh - 
 
 ### Start the RKE2 Control/Server Service
 systemctl enable rke2-server.service && systemctl start rke2-server.service
@@ -141,7 +141,7 @@ Now that the configuration file is completed, let's install and start the RKE2 W
 ```bash
 ### server(s): rke2-wk-01 and rke2-wk-02
 ### Download the RKE2 Worker/Agent Binary
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.24.13 INSTALL_RKE2_TYPE=agent sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.24 INSTALL_RKE2_TYPE=agent sh -
 
 ### Start the RKE2 Worker/Agent Service
 systemctl enable rke2-agent.service && systemctl start rke2-agent.service
