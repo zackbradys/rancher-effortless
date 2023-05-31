@@ -31,6 +31,8 @@ In this deployment guide, we will be installing the entire Rancher Stack to incl
 - Neuvector (Security) - [click to learn more](https://ranchergovernment.com/neuvector)
 - and various minor tools/dependencies (more info below)
 
+If you would like to watch the video for this guide, please check it out [**here**](https://www.youtube.com/@zackbradys).
+
 ### Prerequisites
 * Three (3) Internet Connected Linux Servers
 * Terminal Utility (Terminal, VSCode, Termius etc...)
@@ -45,8 +47,6 @@ Here's an overview the architecture that we will be using for this deployment gu
 ![rancher-harvester-vm-overview](/images/rancher-harvester-vm-overview.png)
 
 Let's run the following commands on each of the nodes to ensure they have the neccessary packages. 
-
-*Note: These commands are specific to Rocky Linux 9.1*
 
 ```bash
 ### server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
@@ -79,7 +79,7 @@ token: rke2SecurePassword
 EOF
 ```
 
-Now that the configuration file is completed, let's download and start the RKE2 Control/Server Node:
+Now that the configuration file is completed, let's install and start the RKE2 Control/Server Node:
 
 ```bash
 ### server(s): rke2-cp-01
@@ -102,7 +102,7 @@ Now that we see that the RKE2 Control/Server is running, let's verify it using `
 sudo ln -s /var/lib/rancher/rke2/data/v1*/bin/kubectl /usr/bin/kubectl
 sudo ln -s /var/run/k3s/containerd/containerd.sock /var/run/containerd/containerd.sock
 
-### Update your paths in .bashrc
+### Update your paths in bashrc
 cat << EOF >> ~/.bashrc
 export KUBECONFIG=/etc/rancher/rke2/rke2.yaml 
 export PATH=$PATH;/var/lib/rancher/rke2/bin;/usr/local/bin/
@@ -120,9 +120,9 @@ It should look like this:
 ### RKE2 Worker Nodes
 Again, let's start by configuring the RKE2 Worker/Agent Nodes, by adding the configuration file. Since we are completing a effortless installation, we are only adding the RKE2 Server and RKE2 Token configuration options. I'm using `ssh` with `root` to access the `rke2-wk-01` and `rke2-wk-02` servers.
 
-*Note: You need to complete each of these steps on each worker/agent server.*
-
 If you woud like to see more ways to configure the RKE2 Worker/Agent, please check out the [rke2 agent docs](https://docs.rke2.io/reference/linux_agent_config).
+
+*Note: You need to complete each of these steps on each worker/agent server.*
 
 ```bash
 ### server(s): rke2-wk-01 and rke2-wk-02
@@ -136,7 +136,7 @@ token: rke2SecurePassword
 EOF
 ```
 
-Now that the configuration file is completed, let's download and start the RKE2 Worker/Agent Nodes:
+Now that the configuration file is completed, let's install and start the RKE2 Worker/Agent Nodes:
 
 ```bash
 ### server(s): rke2-wk-01 and rke2-wk-02
@@ -161,9 +161,8 @@ It should look like this:
 
 Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluster up and running! If you are already familiar with Kubernetes or RKE2, feel free to explore the cluster using `kubectl`. We are going to move onto installing the [Rancher Multi Cluster Manager](https://www.rancher.com/products/rancher), [Rancher Longhorn](https://www.rancher.com/products/longhorn), and [Rancher NeuVector](https://ranchergovernment.com/neuvector).
 
-
 ## Rancher Multi Cluster Manager
-When most folks are starting their Kubernetes journey and specifically their journey with Rancher Kubernetes, there is some confusion about our products. Rancher RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing RKE2!
+When most folks are starting their Kubernetes journey and their journey with Rancher Kubernetes, there is some confusion about the layers of Kubernetes. Rancher RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing Rancher RKE2!
 
 Let's get started with installing the Rancher Manager! In order to get the bits required to configure and install it, we need to use the [Helm CLI](https://helm.sh) for package management and then grab [Cert Manager](https://cert-manager.io) and the [Rancher Manager](https://rancher.io). Let's use `ssh` with `root` to access the `rke2-cp-01` server and run the following commands:
 
@@ -200,7 +199,7 @@ Now let's install Cert Manager with the following commands:
 kubectl create namespace cert-manager
 helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true 
 
-### Wait for the rollout
+### Wait for the deployment/rollout
 sleep 30
 
 ### Verify the status of Cert Manager
@@ -220,8 +219,8 @@ Now let's install the Rancher Manager with the following commands:
 kubectl create namespace cattle-system
 helm upgrade -i rancher rancher-latest/rancher --namespace cattle-system --set bootstrapPassword=rancherSecurePassword --set hostname=rancher.10.0.0.15.sslip.io
 
-### Wait for the rollout
-sleep 60
+### Wait for the deployment/rollout
+sleep 30
 
 ### Verify the status of the Rancher Manager
 kubectl get pods --namespace cattle-system
@@ -234,7 +233,9 @@ It should look like this:
 ### Exploring the Rancher Manager
 Once all the pods show as `Running` in the `cattle-system` namespace, you can access the Rancher Manager! Since we are using `sslip.io` as our Hostname/DNS, we do not need to configure anything else to access the Rancher Manager. Let's head over the domain name and take a look at the Rancher Manager! 
 
-For my deployment, I will be using `https://rancher.10.0.0.15.sslip.io` to access the Rancher Manager. It should look like this:
+For my deployment, I will be using `https://rancher.10.0.0.15.sslip.io` to access the Rancher Manager. 
+
+It should look like this:
 
 ![rancher-rancher-manager-bootstrap](/images/rancher-rancher-manager-bootstrap.png)
 
@@ -270,7 +271,7 @@ Now let's install Longhorn with the following commands:
 kubectl create namespace longhorn-system
 helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --set ingress.enabled=true --set ingress.host=longhorn.10.0.0.15.sslip.io
 
-### Wait for the rollout
+### Wait for the deployment/rollout
 sleep 30
 
 ### Verify the status of Longhorn
@@ -284,12 +285,13 @@ It should look like this:
 ### Exploring Rancher Longhorn
 Once all the pods show as `Running` in the `longhorn-system` namespace, you can access Rancher Longhorn! Just like the Rancher Manager, we are utilizing `sslip.io`, so there is no additional configuration required to access Longhorn. Let's head over to the domain name.
 
-For my deployment, I will be using `https://longhorn.10.0.0.15.sslip.io` to access Rancher Longhorn. It should look like this:
+For my deployment, I will be using `https://longhorn.10.0.0.15.sslip.io` to access Rancher Longhorn. 
+
+It should look like this:
 
 ![rancher-longhorn-home](/images/rancher-longhorn-home.png)
 
 You now have Rancher Longhorn successfully deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager!! Feel free to explore the Longhorn dashboard and see how easy it is to manage your volumes, backup to an S3 Bucket, or setup cross-cluster disaster recovery. Once you're ready, let's move onto [Rancher NeuVector](https://ranchergovernment.com/neuvector).
-
 
 ## Rancher NeuVector
 Let's add the Helm Repository for NeuVector!
@@ -314,7 +316,7 @@ kubectl create namespace cattle-neuvector-system
 
 helm upgrade -i neuvector neuvector/core --namespace cattle-neuvector-system --set k3s.enabled=true --set k3s.runtimePath=/run/k3s/containerd/containerd.sock --set manager.ingress.enabled=true --set manager.svc.type=ClusterIP --set controller.pvc.enabled=true --set manager.ingress.host=neuvector.10.0.0.15.sslip.io
 
-### Wait for the rollout
+### Wait for the deployment/rollout
 sleep 30
 
 ### Verify the status of Longhorn
@@ -328,17 +330,21 @@ It should look like this:
 ### Exploring Rancher NeuVector
 Once all the pods show as `Running` in the `cattle-neuvector-system` namespace, you can access Rancher NeuVector! Just like the Rancher Manager and Rancher Longhorn, we are utilizing `sslip.io`, so there is no additional configuration required to access NeuVector. Let's head over to the domain name.
 
-For my deployment, I will be using `https://neuvector.10.0.0.15.sslip.io` to access Rancher NeuVecutor. It should look like this:
+For my deployment, I will be using `https://neuvector.10.0.0.15.sslip.io` to access Rancher NeuVecutor. 
+
+It should look like this:
 
 ![rancher-neuvector-bootstrap](/images/rancher-neuvector-bootstrap.png)
 
-You should now see NeuVector asking for a the default username and password. The default username is `admin` and the default password is `admin`. Once that is completed... It should look like this:
+You should now see NeuVector asking for a the default username and password. The default username is `admin` and the default password is `admin`.
+
+It should look like this:
 
 ![rancher-neuvector-home](/images/rancher-neuvector-home.png)
 
-You now have Rancher NeuVector deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager and Rancher Longhorn!! Feel free to explore the NeuVector and run vulneriablity scans, investigate cluster assets, or check out your network activity. Here is where we would usually recommend to deploy a few test applications to see the true power behind Rancher. For now, we're going to move onto our final thoughts.
+You now have Rancher NeuVector deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager and Rancher Longhorn!! Feel free to explore the NeuVector and run vulneriablity scans, investigate cluster assets, or check out your network activity. Here is where we would usually recommend users to try creating a new cluster or deploying a few test applications to see the true power behind Rancher. For now, we're going to move onto our final thoughts...
 
 ## Final Thoughts
-In a few fairly easy steps and less than an hour, you have the core Rancher Stack deployed out and ready for use. I would say that statement alone is a very powerful considering the alternatives out there.
+In a few easy steps and a few minutes of your time, you have the core Rancher Stack deployed out and ready for use. I would say that statement alone is a very powerful considering the alternatives out there.
 
-If you have any issues with this deployment guide, please submit an issue or merge request. If you would like to learn more or get in touch with me, please contact me at zbrady@zackbrady.com!
+If you have any issues with this deployment guide, please submit an issue or merge request. If you would like to learn more or get in touch with me (including how to STIG your cluster), please contact me at zbrady@zackbrady.com!
