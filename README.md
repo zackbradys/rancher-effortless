@@ -1,6 +1,6 @@
 # Effortless Deployment of Rancher RKE2, Rancher Manager, Longhorn, and Neuvector
 
-![rancher-long-banner](/images/rgs-banner-rounded.png)
+![rancher-long-banner](/images/rgs-effortless-banner.png)
 
 ### Table of Contents
 * [About Me](#about-me)
