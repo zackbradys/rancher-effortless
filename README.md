@@ -103,7 +103,7 @@ sudo ln -s /var/run/k3s/containerd/containerd.sock /var/run/containerd/container
 ### Update your paths in bashrc
 cat << EOF >> ~/.bashrc
 export KUBECONFIG=/etc/rancher/rke2/rke2.yaml 
-export PATH=$PATH;/var/lib/rancher/rke2/bin;/usr/local/bin/
+export PATH=$PATH:/var/lib/rancher/rke2/bin:/usr/local/bin/
 EOF
 source ~/.bashrc
 
