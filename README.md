@@ -13,7 +13,7 @@
 * [Final Thoughts](#final-thoughts)
 
 ## About Me
-A little bit about me, my history, and what I've done in the industry. 
+A little bit about me, my history, and what I've done in the industry.
 - DOD/IC Contractor
 - U.S. Military Veteran
 - Open-Source Contributor
@@ -38,7 +38,7 @@ If you would like to watch the video for this guide, please check it out [**here
 * Terminal Utility (Terminal, VSCode, Termius etc...)
 
 ## Infrastructure
-For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`. 
+For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`.
 
 If you would like to see my guide for an airgapped/offline installation, please check out my guide [here](https://github.com/zackbradys/rancher-offline). If you would like to see a great Reference Architecture, please check out my co-workers guide [here](https://github.com/clemenko/rancher-ref-arch). Thank you [@clemenko](https://github.com/clemenko)!
 
@@ -46,7 +46,7 @@ Here's an overview the architecture that we will be using for this deployment gu
 
 ![rancher-harvester-vm-overview](/images/rancher-harvester-vm-overview.png)
 
-Let's run the following commands on each of the nodes to ensure they have the neccessary packages. 
+Let's run the following commands on each of the nodes to ensure they have the neccessary packages.
 
 ```bash
 ### server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
@@ -69,7 +69,7 @@ If you would like to see more ways to configure the RKE2 Control/Server, please 
 ```bash
 ### server(s): rke2-cp-01
 ### Create the RKE2 Directory
-mkdir -p /etc/rancher/rke2/ 
+mkdir -p /etc/rancher/rke2/
 
 ### Create the RKE2 Configuration File
 cat << EOF >> /etc/rancher/rke2/config.yaml
@@ -82,7 +82,7 @@ Now that the configuration file is completed, let's install and start the RKE2 C
 ```bash
 ### server(s): rke2-cp-01
 ### Download the RKE2 Control/Server Binary
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.24 INSTALL_RKE2_TYPE=server sh - 
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.24 INSTALL_RKE2_TYPE=server sh -
 
 ### Start the RKE2 Control/Server Service
 systemctl enable rke2-server.service && systemctl start rke2-server.service
@@ -92,7 +92,7 @@ Let's verify that the RKE2 Control/Server is running using `systemctl status rke
 
 ![rancher-rke2-cp-01-systemctl](/images/rancher-rke2-cp-01-systemctl.png)
 
-Now that we see that the RKE2 Control/Server is running, let's verify it using `kubectl`. 
+Now that we see that the RKE2 Control/Server is running, let's verify it using `kubectl`.
 
 ```bash
 ### server(s): rke2-cp-01
@@ -102,8 +102,9 @@ sudo ln -s /var/run/k3s/containerd/containerd.sock /var/run/containerd/container
 
 ### Update your paths in bashrc
 cat << EOF >> ~/.bashrc
-export KUBECONFIG=/etc/rancher/rke2/rke2.yaml 
+export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
 export PATH=$PATH:/var/lib/rancher/rke2/bin:/usr/local/bin/
+alias k=kubectl
 EOF
 source ~/.bashrc
 
@@ -125,7 +126,7 @@ If you woud like to see more ways to configure the RKE2 Worker/Agent, please che
 ```bash
 ### server(s): rke2-wk-01 and rke2-wk-02
 ### Create the RKE2 Directory
-mkdir -p /etc/rancher/rke2/ 
+mkdir -p /etc/rancher/rke2/
 
 ### Create the RKE2 Configuration File
 cat << EOF >> /etc/rancher/rke2/config.yaml
@@ -180,7 +181,7 @@ Now let's add the Helm Repositories for Cert Manager and the Rancher Manager!
 ```bash
 ### server(s): rke2-cp-01
 ### Add and update the helm repositories
-helm repo add jetstack https://charts.jetstack.io 
+helm repo add jetstack https://charts.jetstack.io
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 helm repo update
 ```
@@ -195,7 +196,7 @@ Now let's install Cert Manager with the following commands:
 ### server(s): rke2-cp-01
 ### Create the Cert Manager Namespace and Install Cert Manager
 kubectl create namespace cert-manager
-helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true 
+helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true
 
 ### Wait for the deployment/rollout
 sleep 30
@@ -229,9 +230,9 @@ It should look like this:
 ![rancher-rancher-manager-status](/images/rancher-rancher-manager-status.png)
 
 ### Exploring the Rancher Manager
-Once all the pods show as `Running` in the `cattle-system` namespace, you can access the Rancher Manager! Since we are using `sslip.io` as our Hostname/DNS, we do not need to configure anything else to access the Rancher Manager. Let's head over the domain name and take a look at the Rancher Manager! 
+Once all the pods show as `Running` in the `cattle-system` namespace, you can access the Rancher Manager! Since we are using `sslip.io` as our Hostname/DNS, we do not need to configure anything else to access the Rancher Manager. Let's head over the domain name and take a look at the Rancher Manager!
 
-For my deployment, I will be using `https://rancher.10.0.0.15.sslip.io` to access the Rancher Manager. 
+For my deployment, I will be using `https://rancher.10.0.0.15.sslip.io` to access the Rancher Manager.
 
 It should look like this:
 
@@ -283,7 +284,7 @@ It should look like this:
 ### Exploring Rancher Longhorn
 Once all the pods show as `Running` in the `longhorn-system` namespace, you can access Rancher Longhorn! Just like the Rancher Manager, we are utilizing `sslip.io`, so there is no additional configuration required to access Longhorn. Let's head over to the domain name.
 
-For my deployment, I will be using `https://longhorn.10.0.0.15.sslip.io` to access Rancher Longhorn. 
+For my deployment, I will be using `https://longhorn.10.0.0.15.sslip.io` to access Rancher Longhorn.
 
 It should look like this:
 
@@ -328,7 +329,7 @@ It should look like this:
 ### Exploring Rancher NeuVector
 Once all the pods show as `Running` in the `cattle-neuvector-system` namespace, you can access Rancher NeuVector! Just like the Rancher Manager and Rancher Longhorn, we are utilizing `sslip.io`, so there is no additional configuration required to access NeuVector. Let's head over to the domain name.
 
-For my deployment, I will be using `https://neuvector.10.0.0.15.sslip.io` to access Rancher NeuVecutor. 
+For my deployment, I will be using `https://neuvector.10.0.0.15.sslip.io` to access Rancher NeuVecutor.
 
 It should look like this:
 
