@@ -5,6 +5,7 @@
 ### Table of Contents
 * [About Me](#about-me)
 * [Introduction](#introduction)
+* [Watch the Video](#watch-the-video)
 * [Infrastructure](#infrastructure)
 * [Rancher RKE2](#rancher-rke2)
 * [Rancher Multi Cluster Manager](#rancher-multi-cluster-manager)
@@ -36,9 +37,11 @@ If you would like to watch the video for this guide, please check it out [**here
 * Three (3) Internet Connected Linux Servers
 * Terminal Utility (Terminal, VSCode, Termius etc...)
 
-### Watch the Video
+## Watch the Video
 
-If you would rather follow this guide with a video... take a look -> https://youtu.be/P65r2ODNlTg
+If you would rather follow this guide with a video... please click on the YouTube Video below!
+
+[![rancher-effortless-video](images/rancher-effortless-thumbnail.png)](https://youtu.be/P65r2ODNlTg)
 
 ## Infrastructure
 For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`.
