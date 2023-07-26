@@ -26,12 +26,10 @@ A little bit about me, my history, and what I've done in the industry.
 ### Welcome to the Effortless Rancher Installation Guide
 In this deployment guide, we will be installing the entire Rancher Stack to include the following products:
 
-- RKE2 (Kubernetes Engine) - [click learn more](https://www.rancher.com/products/rke)
-- Rancher MCM (Cluster Management) - [click to learn more](https://www.rancher.com/products/rancher)
-- Longhorn (Storage) - [click to learn more](https://www.rancher.com/products/longhorn)
-- Neuvector (Security) - [click to learn more](https://ranchergovernment.com/neuvector)
-
-If you would like to watch the video for this guide, please check it out [**here**](https://www.youtube.com/@zackbradys).
+- Rancher RKE2 (Kubernetes Engine) - [click learn more](https://ranchergovernment.com/products/rke2)
+- Rancher MCM (Cluster Management) - [click to learn more](https://ranchergovernment.com/products/mcm)
+- Longhorn (Storage) - [click to learn more](https://www.ranchergovernment.com/products/longhorn)
+- Neuvector (Security) - [click to learn more](https://ranchergovernment.com/products/neuvector)
 
 ### Prerequisites
 * Three (3) Internet Connected Linux Servers
@@ -39,14 +37,12 @@ If you would like to watch the video for this guide, please check it out [**here
 
 ## Watch the Video
 
-If you would rather follow this guide with an awesome video... please click below!
+If you would rather follow this guide with an awesome video... please click below (https://youtu.be/P65r2ODNlTg)!
 
 [![rancher-effortless-youtube-video](images/rancher-effortless-youtube.png)](https://youtu.be/P65r2ODNlTg)
 
 ## Infrastructure
 For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`.
-
-If you would like to see my guide for an airgapped/offline installation, please check out my guide [here](https://github.com/zackbradys/rancher-airgap). If you would like to see a great Reference Architecture, please check out my co-workers guide [here](https://github.com/clemenko/rancher-ref-arch). Thank you [@clemenko](https://github.com/clemenko)!
 
 Here's an overview the architecture that we will be using for this deployment guide:
 
@@ -164,12 +160,12 @@ It should look like this:
 
 ![rancher-rke2-cp-01-kubectl-all](images/rancher-rke2-cp-01-kubectl-all.png)
 
-Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluster up and running! If you are already familiar with Kubernetes or RKE2, feel free to explore the cluster using `kubectl`. We are going to move onto installing the [Rancher Multi Cluster Manager](https://www.rancher.com/products/rancher), [Rancher Longhorn](https://www.rancher.com/products/longhorn), and [Rancher NeuVector](https://ranchergovernment.com/neuvector).
+Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluster up and running! If you are already familiar with Kubernetes or RKE2, feel free to explore the cluster using `kubectl`. We are going to move onto installing the [Rancher Multi Cluster Manager](https://www.ranchergovernment.com/products/rancher), [Rancher Longhorn](https://www.ranchergovernment.com/products/longhorn), and [Rancher NeuVector](https://ranchergovernment.com/products/neuvector).
 
 ## Rancher Multi Cluster Manager
 When most folks are starting their Kubernetes journey and their journey with Rancher Kubernetes, there is some confusion about the layers of Kubernetes. Rancher RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing Rancher RKE2!
 
-Let's get started with installing the Rancher Manager! In order to get the bits required to configure and install it, we need to use the [Helm CLI](https://helm.sh) for package management and then grab [Cert Manager](https://cert-manager.io) and the [Rancher Manager](https://rancher.io). Let's use `ssh` with `root` to access the `rke2-cp-01` server and run the following commands:
+Let's get started with installing the Rancher Manager! In order to get the bits required to configure and install it, we need to use the [Helm CLI](https://helm.sh) for package management and then grab [Cert Manager](https://cert-manager.io) and the Rancher Manager. Let's use `ssh` with `root` to access the `rke2-cp-01` server and run the following commands:
 
 ```bash
 ### server(s): rke2-cp-01
@@ -250,7 +246,7 @@ You should now see the Rancher Manager asking for a password that we set during 
 
 ![rancher-rancher-manager-home](images/rancher-rancher-manager-home.png)
 
-You now have the Rancher Manager sucessfully deployed on our RKE2 Kubernetes Cluster!!! Remember there are many ways to configure and this was only a minimal installation. Feel free to explore everything you are able to do inside of the Rancher Manager, or we can move onto the next step of installing [Rancher Longhorn](https://www.rancher.com/products/longhorn).
+You now have the Rancher Manager sucessfully deployed on our RKE2 Kubernetes Cluster!!! Remember there are many ways to configure and this was only a minimal installation. Feel free to explore everything you are able to do inside of the Rancher Manager, or we can move onto the next step of installing Rancher Longhorn.
 
 ## Rancher Longhorn
 Let's move up the stack and start thinking about storage. Rancher Longhorn provides cloud native and highly available persistent block storage for Kubernetes, with backups and disaster recovery. In order to install Longhorn onto our cluster, we pretty much follow the same steps as we did for Cert Manager and the Rancher Manager.
@@ -296,7 +292,7 @@ It should look like this:
 
 ![rancher-longhorn-home](images/rancher-longhorn-home.png)
 
-You now have Rancher Longhorn successfully deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager!! Feel free to explore the Longhorn dashboard and see how easy it is to manage your volumes, backup to an S3 Bucket, or setup cross-cluster disaster recovery. Once you're ready, let's move onto [Rancher NeuVector](https://ranchergovernment.com/neuvector).
+You now have Rancher Longhorn successfully deployed on our RKE2 Kuberenetes Cluster with the Rancher Manager!! Feel free to explore the Longhorn dashboard and see how easy it is to manage your volumes, backup to an S3 Bucket, or setup cross-cluster disaster recovery. Once you're ready, let's move onto Rancher NeuVector.
 
 ## Rancher NeuVector
 Let's add the Helm Repository for NeuVector!
