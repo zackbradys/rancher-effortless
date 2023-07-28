@@ -1,4 +1,4 @@
-![rancher-long-banner](images/rgs-effortless-banner.png)
+![rgs-rancher-banner](images/rgs-rancher-banner.png)
 
 # Effortless Deployment of Rancher RKE2, Rancher Manager, Longhorn, and Neuvector
 
@@ -29,7 +29,7 @@ In this deployment guide, we will be installing the entire Rancher Stack to incl
 - Rancher RKE2 (Kubernetes Engine) - [click learn more](https://ranchergovernment.com/products/rke2)
 - Rancher MCM (Cluster Management) - [click to learn more](https://ranchergovernment.com/products/mcm)
 - Longhorn (Storage) - [click to learn more](https://www.ranchergovernment.com/products/longhorn)
-- Neuvector (Security) - [click to learn more](https://ranchergovernment.com/products/neuvector)
+- Neuvector (Security) - [click to learn more](https://ranchergovernment.com/neuvector)
 
 ### Prerequisites
 * Three (3) Internet Connected Linux Servers
@@ -160,7 +160,7 @@ It should look like this:
 
 ![rancher-rke2-cp-01-kubectl-all](images/rancher-rke2-cp-01-kubectl-all.png)
 
-Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluster up and running! If you are already familiar with Kubernetes or RKE2, feel free to explore the cluster using `kubectl`. We are going to move onto installing the [Rancher Multi Cluster Manager](https://www.ranchergovernment.com/products/rancher), [Rancher Longhorn](https://www.ranchergovernment.com/products/longhorn), and [Rancher NeuVector](https://ranchergovernment.com/products/neuvector).
+Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluster up and running! If you are already familiar with Kubernetes or RKE2, feel free to explore the cluster using `kubectl`. We are going to move onto installing the [Rancher Multi Cluster Manager](https://www.ranchergovernment.com/products/mcm), [Rancher Longhorn](https://www.ranchergovernment.com/products/longhorn), and [Rancher NeuVector](https://ranchergovernment.com/neuvector).
 
 ## Rancher Multi Cluster Manager
 When most folks are starting their Kubernetes journey and their journey with Rancher Kubernetes, there is some confusion about the layers of Kubernetes. Rancher RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing Rancher RKE2!
