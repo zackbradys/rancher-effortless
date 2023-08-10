@@ -53,11 +53,8 @@ Let's run the following commands on each of the nodes to ensure they have the ne
 ```bash
 ### server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
 ### Install Packages
-yum install -y zip zstd tree jq cryptsetup
-yum --setopt=tsflags=noscripts install -y nfs-utils
-yum --setopt=tsflags=noscripts install -y iscsi-initiator-utils && echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
-
-yum update -y && yum clean all
+yum install -y zip zstd tree jq iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup
+yum install -y nfs-utils && yum install -y iscsi-initiator-utils && echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
 ```
 
 ## Rancher RKE2
