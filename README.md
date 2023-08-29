@@ -198,7 +198,7 @@ kubectl create namespace cert-manager
 helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true
 
 ### Wait for the deployment/rollout
-sleep 30
+sleep 60
 
 ### Verify the status of Cert Manager
 kubectl get pods --namespace cert-manager
@@ -218,7 +218,7 @@ kubectl create namespace cattle-system
 helm upgrade -i rancher rancher-latest/rancher --namespace cattle-system --set bootstrapPassword=rancherSecurePassword --set hostname=rancher.10.0.0.15.sslip.io
 
 ### Wait for the deployment/rollout
-sleep 30
+sleep 45
 
 ### Verify the status of the Rancher Manager
 kubectl get pods --namespace cattle-system
