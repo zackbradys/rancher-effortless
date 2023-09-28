@@ -15,7 +15,7 @@
 
 ## About Me
 A little bit about me, my history, and what I've done in the industry.
-- DOD/IC Contractor
+- Former Contractor
 - U.S. Military Veteran
 - Open-Source Contributor
 - Built and Exited a Digital Firm
@@ -53,8 +53,13 @@ Let's run the following commands on each of the nodes to ensure they have the ne
 ```bash
 ### server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
 ### Install Packages
-yum install -y zip zstd tree jq iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup
-yum install -y nfs-utils && yum install -y iscsi-initiator-utils && echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
+yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup
+yum install -y nfs-utils; yum install -y iscsi-initiator-utils; yum install -y zip zstd tree jq
+
+### Modify Settings
+echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
+systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
+echo -e "[keyfile]\unmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf & systemctl restart NetworkManager
 ```
 
 ## Rancher RKE2
