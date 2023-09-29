@@ -184,7 +184,7 @@ Now let's add the Helm Repositories for Cert Manager and the Rancher Manager!
 
 ```bash
 ### server(s): rke2-cp-01
-### Add and update the helm repositories
+### Add and Update the Helm Repositories
 helm repo add jetstack https://charts.jetstack.io
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 helm repo update
@@ -257,7 +257,7 @@ Let's add the Helm Repository for Longhorn!
 
 ```bash
 ### server(s): rke2-cp-01
-### Add and update the helm repository
+### Add and Update the Helm Repository
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
 ```
@@ -301,7 +301,7 @@ Let's add the Helm Repository for NeuVector!
 
 ```bash
 ### server(s): rke2-cp-01
-### Add and update the helm repository
+### Add and Update the Helm Repository
 helm repo add neuvector https://neuvector.github.io/neuvector-helm
 helm repo update
 ```
