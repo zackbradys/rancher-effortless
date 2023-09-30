@@ -59,7 +59,7 @@ yum install -y nfs-utils; yum install -y iscsi-initiator-utils; yum install -y z
 ### Modify Settings
 echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
 systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
-echo -e "[keyfile]\unmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf & systemctl restart NetworkManager
+echo -e "[keyfile]\unmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
 ```
 
 ## Rancher RKE2
