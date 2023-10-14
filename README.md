@@ -59,7 +59,7 @@ yum install -y nfs-utils; yum install -y iscsi-initiator-utils; yum install -y z
 ### Modify Settings
 echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
 systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
-echo -e "[keyfile]\unmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
+echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
 ```
 
 ## Rancher RKE2
@@ -200,6 +200,7 @@ Now let's install Cert Manager with the following commands:
 ### server(s): rke2-cp-01
 ### Create the Cert Manager Namespace and Install Cert Manager
 kubectl create namespace cert-manager
+
 helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true
 
 ### Wait for the deployment/rollout
@@ -218,8 +219,8 @@ Now let's install the Rancher Manager with the following commands:
 ```bash
 ### server(s): rke2-cp-01
 ### Create the Rancher Namespace and Install Rancher
-### sslip.io is a DNS provider that converts an ip address to a hostname
 kubectl create namespace cattle-system
+
 helm upgrade -i rancher rancher-latest/rancher --namespace cattle-system --set bootstrapPassword=rancherSecurePassword --set hostname=rancher.10.0.0.15.sslip.io
 
 ### Wait for the deployment/rollout
@@ -272,6 +273,7 @@ Now let's install Longhorn with the following commands:
 ### server(s): rke2-cp-01
 ### Create the Longhorn Namespace and Install Longhorn
 kubectl create namespace longhorn-system
+
 helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --set ingress.enabled=true --set ingress.host=longhorn.10.0.0.15.sslip.io
 
 ### Wait for the deployment/rollout
@@ -317,7 +319,7 @@ Now let's install NeuVector with the following commands:
 ### Create the NeuVector Namespace and Install NeuVector
 kubectl create namespace cattle-neuvector-system
 
-helm upgrade -i neuvector neuvector/core --namespace cattle-neuvector-system --set k3s.enabled=true --set k3s.runtimePath=/run/k3s/containerd/containerd.sock --set manager.ingress.enabled=true --set manager.svc.type=ClusterIP --set controller.pvc.enabled=true --set manager.ingress.host=neuvector.10.0.0.15.sslip.io --set global.cattle.url=https://rancher.10.0.0.15.sslip.io --set controller.ranchersso.enabled=true --set rbac=true
+helm upgrade -i neuvector neuvector/core --namespace cattle-neuvector-system --set k3s.enabled=true --set manager.ingress.enabled=true --set manager.svc.type=ClusterIP --set controller.pvc.enabled=true --set manager.ingress.host=neuvector.10.0.0.15.sslip.io --set global.cattle.url=https://rancher.10.0.0.15.sslip.io --set controller.ranchersso.enabled=true --set rbac=true
 
 ### Wait for the deployment/rollout
 sleep 30
