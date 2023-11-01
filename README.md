@@ -48,7 +48,7 @@ Here's an overview the architecture that we will be using for this deployment gu
 
 ![rancher-harvester-vm-overview](images/rancher-harvester-vm-overview.png)
 
-Let's run the following commands on each of the nodes to ensure they have the neccessary packages.
+Let's run the following commands on each of the nodes to ensure they have the neccessary packages and configuration settings.
 
 ```bash
 ### server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
@@ -85,7 +85,7 @@ Now that the configuration file is completed, let's install and start the RKE2 C
 
 ```bash
 ### server(s): rke2-cp-01
-### Download the RKE2 Control/Server Binary
+### Download the RKE2 Control/Server
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.25 INSTALL_RKE2_TYPE=server sh -
 
 ### Start the RKE2 Control/Server Service
@@ -96,7 +96,7 @@ Let's verify that the RKE2 Control/Server is running using `systemctl status rke
 
 ![rancher-rke2-cp-01-systemctl](images/rancher-rke2-cp-01-systemctl.png)
 
-Now that we see that the RKE2 Control/Server is running, let's verify it using `kubectl`.
+Now that we see that the RKE2 Control/Server is running, let's verify using `kubectl`.
 
 ```bash
 ### server(s): rke2-cp-01
@@ -105,14 +105,12 @@ sudo ln -s /var/lib/rancher/rke2/data/v1*/bin/kubectl /usr/bin/kubectl
 sudo ln -s /var/run/k3s/containerd/containerd.sock /var/run/containerd/containerd.sock
 
 ### Update your paths in bashrc
-cat << EOF >> ~/.bashrc
-export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
-export PATH=$PATH:/var/lib/rancher/rke2/bin:/usr/local/bin/
-alias k=kubectl
-EOF
+echo "export KUBECONFIG=/etc/rancher/rke2/rke2.yaml" >> ~/.bashrc
+echo "export PATH=$PATH:/var/lib/rancher/rke2/bin:/usr/local/bin/" >> ~/.bashrc
+echo "alias k=kubectl" >> ~/.bashrc
 source ~/.bashrc
 
-### Verify status with kubectl
+### Verify RKE2 is Running/Ready
 kubectl get nodes
 ```
 
@@ -143,7 +141,7 @@ Now that the configuration file is completed, let's install and start the RKE2 W
 
 ```bash
 ### server(s): rke2-wk-01 and rke2-wk-02
-### Download the RKE2 Worker/Agent Binary
+### Download the RKE2 Worker/Agent
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.25 INSTALL_RKE2_TYPE=agent sh -
 
 ### Start the RKE2 Worker/Agent Service
@@ -154,7 +152,7 @@ Let's head back to the `rke2-cp-01` server and verify the worker/agent nodes suc
 
 ```bash
 ### server(s): rke2-cp-01
-### Verify status with kubectl
+### Verify RKE2 is Running/Ready
 kubectl get nodes
 ```
 
@@ -206,7 +204,7 @@ helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --se
 ### Wait for the deployment/rollout
 sleep 60
 
-### Verify the status of Cert Manager
+### Verify the Status of Cert Manager
 kubectl get pods --namespace cert-manager
 ```
 
@@ -226,7 +224,7 @@ helm upgrade -i rancher rancher-latest/rancher --namespace cattle-system --set b
 ### Wait for the deployment/rollout
 sleep 45
 
-### Verify the status of the Rancher Manager
+### Verify the Status of the Rancher Manager
 kubectl get pods --namespace cattle-system
 ```
 
@@ -279,7 +277,7 @@ helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --set ing
 ### Wait for the deployment/rollout
 sleep 30
 
-### Verify the status of Longhorn
+### Verify the Status of Longhorn
 kubectl get pods --namespace longhorn-system
 ```
 
@@ -324,7 +322,7 @@ helm upgrade -i neuvector neuvector/core --namespace cattle-neuvector-system --s
 ### Wait for the deployment/rollout
 sleep 30
 
-### Verify the status of Longhorn
+### Verify the Status of Longhorn
 kubectl get pods --namespace cattle-neuvector-system
 ```
 
