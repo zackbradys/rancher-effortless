@@ -86,7 +86,7 @@ Now that the configuration file is completed, let's install and start the RKE2 C
 ```bash
 ### server(s): rke2-cp-01
 ### Download the RKE2 Control/Server
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.25 INSTALL_RKE2_TYPE=server sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.26 INSTALL_RKE2_TYPE=server sh -
 
 ### Start the RKE2 Control/Server Service
 systemctl enable rke2-server.service && systemctl start rke2-server.service
@@ -144,7 +144,7 @@ Now that the configuration file is completed, let's install and start the RKE2 W
 ```bash
 ### server(s): rke2-wk-01 and rke2-wk-02
 ### Download the RKE2 Worker/Agent
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.25 INSTALL_RKE2_TYPE=agent sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.26 INSTALL_RKE2_TYPE=agent sh -
 
 ### Start the RKE2 Worker/Agent Service
 systemctl enable rke2-agent.service && systemctl start rke2-agent.service
