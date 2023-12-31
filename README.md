@@ -1,13 +1,13 @@
 ![rgs-rancher-banner](images/rgs-rancher-banner.png)
 
-# Effortless Deployment of Rancher RKE2, Rancher Manager, Longhorn, and Neuvector
+# Effortless Deployment of RKE2, Rancher Manager, Longhorn, and Neuvector
 
 ### Table of Contents
 * [About Me](#about-me)
 * [Introduction](#introduction)
 * [Watch the Video](#watch-the-video)
 * [Infrastructure](#infrastructure)
-* [Rancher RKE2](#rancher-rke2)
+* [Rancher Kubernetes (RKE2)](#rancher-kubernetes-rke2)
 * [Rancher Multi Cluster Manager](#rancher-multi-cluster-manager)
 * [Rancher Longhorn](#rancher-longhorn)
 * [Rancher NeuVector](#rancher-neuvector)
@@ -16,7 +16,7 @@
 ## About Me
 A little bit about me, my history, and what I've done in the industry.
 - Former Contractor
-- U.S. Military Veteran
+- U.S. Military Reservist
 - Open-Source Contributor
 - Built and Exited a Digital Firm
 - Active Volunteer Firefighter/EMT
@@ -26,8 +26,8 @@ A little bit about me, my history, and what I've done in the industry.
 ### Welcome to the Effortless Rancher Installation Guide
 In this deployment guide, we will be installing the entire Rancher Stack to include the following products:
 
-- Rancher RKE2 (Kubernetes Engine) - [click learn more](https://ranchergovernment.com/products/rke2)
-- Rancher MCM (Cluster Management) - [click to learn more](https://ranchergovernment.com/products/mcm)
+- RKE2 (Kubernetes Distribution) - [click learn more](https://ranchergovernment.com/products/rke2)
+- Rancher Manager (Cluster Management) - [click to learn more](https://ranchergovernment.com/products/mcm)
 - Longhorn (Storage) - [click to learn more](https://www.ranchergovernment.com/products/longhorn)
 - Neuvector (Security) - [click to learn more](https://ranchergovernment.com/neuvector)
 
@@ -53,8 +53,8 @@ Let's run the following commands on each of the nodes to ensure they have the ne
 ```bash
 ### server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
 ### Install Packages
-yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup
-yum install -y nfs-utils; yum install -y iscsi-initiator-utils; yum install -y zip zstd tree jq
+yum install -y iptables container-selinux libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup
+yum install -y nfs-utils iscsi-initiator-utils; yum install -y zip zstd tree jq
 
 ### Modify Settings
 echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
@@ -62,8 +62,8 @@ systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-s
 echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
 ```
 
-## Rancher RKE2
-In order to configure and install Rancher RKE2, you need to have Control/Server nodes and Worker/Agent nodes. We will start by setting up the Control/Server node and then setting up the Worker/Agent nodes. There are many ways to accomplish this and this guide is meant for an effortless and minimal installation, please review the [rke2 docs](https://docs.rke2.io) for more information.
+## Rancher Kubernetes (RKE2)
+In order to configure and install RKE2, you need to have Control/Server nodes and Worker/Agent nodes. We will start by setting up the Control/Server node and then setting up the Worker/Agent nodes. There are many ways to accomplish this and this guide is meant for an effortless and minimal installation, please review the [rke2 docs](https://docs.rke2.io) for more information.
 
 ### RKE2 Control Node
 Let's start by configuring the RKE2 Control/Server Node, by adding the configuration file. Since we are completing a effortless installation, we are only adding the RKE2 Token configuration option. I'm using `ssh` with `root` to access the `rke2-cp-01` server.
@@ -162,10 +162,10 @@ It should look like this:
 
 ![rancher-rke2-cp-01-kubectl-all](images/rancher-rke2-cp-01-kubectl-all.png)
 
-Congraulations!! In a few minutes, you now have a Rancher RKE2 Kubernetes Cluster up and running! If you are already familiar with Kubernetes or RKE2, feel free to explore the cluster using `kubectl`. We are going to move onto installing the [Rancher Multi Cluster Manager](https://www.ranchergovernment.com/products/mcm), [Rancher Longhorn](https://www.ranchergovernment.com/products/longhorn), and [Rancher NeuVector](https://ranchergovernment.com/neuvector).
+Congraulations!! In a few minutes, you now have a RKE2 Cluster up and running! If you are already familiar with Kubernetes or RKE2, feel free to explore the cluster using `kubectl`. We are going to move onto installing the [Rancher Multi Cluster Manager](https://www.ranchergovernment.com/products/mcm), [Rancher Longhorn](https://www.ranchergovernment.com/products/longhorn), and [Rancher NeuVector](https://ranchergovernment.com/neuvector).
 
 ## Rancher Multi Cluster Manager
-When most folks are starting their Kubernetes journey and their journey with Rancher Kubernetes, there is some confusion about the layers of Kubernetes. Rancher RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing Rancher RKE2!
+When most folks are starting their Kubernetes journey and their journey with Rancher Kubernetes, there is some confusion about the layers of Kubernetes. RKE2 is our Kubernetes distribution and the Rancher Multi Cluster Manager is our single pane of glass dashboard for managing any type of Kubernetes cluster (including our not to be named competitors). In order to run our Rancher Manager, we needed to start with a Kubernetes cluster and that's why we started with installing RKE2!
 
 Let's get started with installing the Rancher Manager! In order to get the bits required to configure and install it, we need to use the [Helm CLI](https://helm.sh) for package management and then grab [Cert Manager](https://cert-manager.io) and the Rancher Manager. Let's use `ssh` with `root` to access the `rke2-cp-01` server and run the following commands:
 
@@ -176,7 +176,7 @@ mkdir -p /opt/rancher/helm
 cd /opt/rancher/helm
 
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh && ./get_helm.sh
+chmod 755 get_helm.sh && ./get_helm.sh
 mv /usr/local/bin/helm /usr/bin/helm
 ```
 
