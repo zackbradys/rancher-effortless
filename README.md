@@ -16,7 +16,7 @@
 
 ## About Me
 
-A little bit about me, my history, and what I've done in the industry.
+A little bit about me and my history...
 
 - Former Contractor
 - U.S. Military Reservist
@@ -57,12 +57,13 @@ Here's an overview the architecture that we will be using for this deployment gu
 Let's run the following commands on each of the nodes to ensure they have the neccessary packages and configuration settings.
 
 ```bash
-### server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
-### Install Packages
+# server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
+# Install Packages
 yum install -y iptables container-selinux libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup
 yum install -y nfs-utils iscsi-initiator-utils; yum install -y zip zstd tree jq
 
-### Modify Settings
+# Modify Settings
+# Not required for every operating system
 echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
 systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
 echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
@@ -79,11 +80,11 @@ Let's start by configuring the RKE2 Control/Server Node, by adding the configura
 If you would like to see more ways to configure the RKE2 Control/Server, please check out the [rke2 server docs](https://docs.rke2.io/reference/server_config).
 
 ```bash
-### server(s): rke2-cp-01
-### Create the RKE2 Directory
+# server(s): rke2-cp-01
+# Create the RKE2 Directory
 mkdir -p /etc/rancher/rke2/
 
-### Create the RKE2 Configuration File
+# Create the RKE2 Configuration File
 cat << EOF >> /etc/rancher/rke2/config.yaml
 token: rke2SecurePassword
 EOF
@@ -92,11 +93,11 @@ EOF
 Now that the configuration file is completed, let's install and start the RKE2 Control/Server Node:
 
 ```bash
-### server(s): rke2-cp-01
-### Download the RKE2 Control/Server
+# server(s): rke2-cp-01
+# Download the RKE2 Control/Server
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.27 INSTALL_RKE2_TYPE=server sh -
 
-### Start the RKE2 Control/Server Service
+# Start the RKE2 Control/Server Service
 systemctl enable rke2-server.service && systemctl start rke2-server.service
 ```
 
@@ -107,12 +108,12 @@ Let's verify that the RKE2 Control/Server is running using `systemctl status rke
 Now that we see that the RKE2 Control/Server is running, let's verify using `kubectl`.
 
 ```bash
-### server(s): rke2-cp-01
-### Symlink kubectl and containerd
+# server(s): rke2-cp-01
+# Symlink kubectl and containerd
 sudo ln -s /var/lib/rancher/rke2/data/v1*/bin/kubectl /usr/bin/kubectl
 sudo ln -s /var/run/k3s/containerd/containerd.sock /var/run/containerd/containerd.sock
 
-### Update and Source BASHRC
+# Update and Source BASHRC
 cat << EOF >> ~/.bashrc
 export PATH=$PATH:/var/lib/rancher/rke2/bin:/usr/local/bin/
 export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
@@ -120,7 +121,7 @@ export CRI_CONFIG_FILE=/var/lib/rancher/rke2/agent/etc/crictl.yaml
 alias k=kubectl
 EOF
 
-### Verify RKE2 is Running/Ready
+# Verify RKE2 is Running/Ready
 kubectl get nodes
 ```
 
@@ -137,11 +138,11 @@ If you woud like to see more ways to configure the RKE2 Worker/Agent, please che
 _Note: You need to complete each of these steps on each worker/agent server._
 
 ```bash
-### server(s): rke2-wk-01 and rke2-wk-02
-### Create the RKE2 Directory
+# server(s): rke2-wk-01 and rke2-wk-02
+# Create the RKE2 Directory
 mkdir -p /etc/rancher/rke2/
 
-### Create the RKE2 Configuration File
+# Create the RKE2 Configuration File
 cat << EOF >> /etc/rancher/rke2/config.yaml
 server: https://10.0.0.15:9345
 token: rke2SecurePassword
@@ -151,19 +152,19 @@ EOF
 Now that the configuration file is completed, let's install and start the RKE2 Worker/Agent Nodes:
 
 ```bash
-### server(s): rke2-wk-01 and rke2-wk-02
-### Download the RKE2 Worker/Agent
+# server(s): rke2-wk-01 and rke2-wk-02
+# Download the RKE2 Worker/Agent
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.27 INSTALL_RKE2_TYPE=agent sh -
 
-### Start the RKE2 Worker/Agent Service
+# Start the RKE2 Worker/Agent Service
 systemctl enable rke2-agent.service && systemctl start rke2-agent.service
 ```
 
 Let's head back to the `rke2-cp-01` server and verify the worker/agent nodes sucessfully joined the cluster.
 
 ```bash
-### server(s): rke2-cp-01
-### Verify RKE2 is Running/Ready
+# server(s): rke2-cp-01
+# Verify RKE2 is Running/Ready
 kubectl get nodes
 ```
 
@@ -180,8 +181,8 @@ When most folks are starting their Kubernetes journey and their journey with Ran
 Let's get started with installing the Rancher Manager! In order to get the bits required to configure and install it, we need to use the [Helm CLI](https://helm.sh) for package management and then grab [Cert Manager](https://cert-manager.io) and the Rancher Manager. Let's use `ssh` with `root` to access the `rke2-cp-01` server and run the following commands:
 
 ```bash
-### server(s): rke2-cp-01
-### Download and Install Helm CLI
+# server(s): rke2-cp-01
+# Download and Install Helm CLI
 mkdir -p /opt/rancher/helm
 cd /opt/rancher/helm
 
@@ -193,10 +194,10 @@ mv /usr/local/bin/helm /usr/bin/helm
 Now let's add the Helm Repositories for Cert Manager and the Rancher Manager!
 
 ```bash
-### server(s): rke2-cp-01
-### Add and Update the Helm Repositories
+# server(s): rke2-cp-01
+# Add and Update the Helm Repositories
 helm repo add jetstack https://charts.jetstack.io
-helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 helm repo update
 ```
 
@@ -207,16 +208,16 @@ It should look like this:
 Now let's install Cert Manager with the following commands:
 
 ```bash
-### server(s): rke2-cp-01
-### Create the Cert Manager Namespace and Install Cert Manager
+# server(s): rke2-cp-01
+# Create the Cert Manager Namespace and Install Cert Manager
 kubectl create namespace cert-manager
 
 helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true
 
-### Wait for the deployment/rollout
+# Wait for the deployment and rollout
 sleep 60
 
-### Verify the Status of Cert Manager
+# Verify the status of Cert Manager
 kubectl get pods --namespace cert-manager
 ```
 
@@ -227,16 +228,16 @@ It should look like this:
 Now let's install the Rancher Manager with the following commands:
 
 ```bash
-### server(s): rke2-cp-01
-### Create the Rancher Namespace and Install Rancher
+# server(s): rke2-cp-01
+# Create the Rancher Namespace and Install Rancher
 kubectl create namespace cattle-system
 
-helm upgrade -i rancher rancher-latest/rancher --namespace cattle-system --set bootstrapPassword=rancherSecurePassword --set hostname=rancher.10.0.0.15.sslip.io
+helm upgrade -i rancher rancher-stable/rancher --namespace cattle-system --set bootstrapPassword=rancherSecurePassword --set hostname=rancher.10.0.0.15.sslip.io
 
-### Wait for the deployment/rollout
+# Wait for the deployment and rollout
 sleep 45
 
-### Verify the Status of the Rancher Manager
+# Verify the status of the Rancher Manager
 kubectl get pods --namespace cattle-system
 ```
 
@@ -269,8 +270,8 @@ Let's move up the stack and start thinking about storage. Rancher Longhorn provi
 Let's add the Helm Repository for Longhorn!
 
 ```bash
-### server(s): rke2-cp-01
-### Add and Update the Helm Repository
+# server(s): rke2-cp-01
+# Add and Update the Helm Repository
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
 ```
@@ -282,16 +283,16 @@ It should look like this:
 Now let's install Longhorn with the following commands:
 
 ```bash
-### server(s): rke2-cp-01
-### Create the Longhorn Namespace and Install Longhorn
+# server(s): rke2-cp-01
+# Create the Longhorn Namespace and Install Longhorn
 kubectl create namespace longhorn-system
 
 helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --set ingress.enabled=true --set ingress.host=longhorn.10.0.0.15.sslip.io
 
-### Wait for the deployment/rollout
+# Wait for the deployment and rollout
 sleep 30
 
-### Verify the Status of Longhorn
+# Verify the status of Longhorn
 kubectl get pods --namespace longhorn-system
 ```
 
@@ -316,8 +317,8 @@ You now have Rancher Longhorn successfully deployed on our RKE2 Kuberenetes Clus
 Let's add the Helm Repository for NeuVector!
 
 ```bash
-### server(s): rke2-cp-01
-### Add and Update the Helm Repository
+# server(s): rke2-cp-01
+# Add and Update the Helm Repository
 helm repo add neuvector https://neuvector.github.io/neuvector-helm
 helm repo update
 ```
@@ -329,16 +330,16 @@ It should look like this:
 Now let's install NeuVector with the following commands:
 
 ```bash
-### server(s): rke2-cp-01
-### Create the NeuVector Namespace and Install NeuVector
+# server(s): rke2-cp-01
+# Create the NeuVector Namespace and Install NeuVector
 kubectl create namespace cattle-neuvector-system
 
 helm upgrade -i neuvector neuvector/core --namespace cattle-neuvector-system --set k3s.enabled=true --set manager.ingress.enabled=true --set manager.svc.type=ClusterIP --set controller.pvc.enabled=true --set manager.ingress.host=neuvector.10.0.0.15.sslip.io --set global.cattle.url=https://rancher.10.0.0.15.sslip.io --set controller.ranchersso.enabled=true --set rbac=true
 
-### Wait for the deployment/rollout
+# Wait for the deployment and rollout
 sleep 30
 
-### Verify the Status of Longhorn
+# Verify the status of Longhorn
 kubectl get pods --namespace cattle-neuvector-system
 ```
 
