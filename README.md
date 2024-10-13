@@ -16,7 +16,7 @@
 
 ## About Me
 
-A little bit about me and my history...
+A little bit about me and my history in the industry. If you have any questions, please reach out to me at zbrady@zackbrady.com!
 
 - Former Contractor
 - U.S. Military Reservist
@@ -95,7 +95,7 @@ Now that the configuration file is completed, let's install and start the RKE2 C
 ```bash
 # server(s): rke2-cp-01
 # Download the RKE2 Control/Server
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.28 INSTALL_RKE2_TYPE=server sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.29 INSTALL_RKE2_TYPE=server sh -
 
 # Start the RKE2 Control/Server Service
 systemctl enable rke2-server.service && systemctl start rke2-server.service
@@ -157,7 +157,7 @@ Now that the configuration file is completed, let's install and start the RKE2 W
 ```bash
 # server(s): rke2-wk-01 and rke2-wk-02
 # Download the RKE2 Worker/Agent
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.28 INSTALL_RKE2_TYPE=agent sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.29 INSTALL_RKE2_TYPE=agent sh -
 
 # Start the RKE2 Worker/Agent Service
 systemctl enable rke2-agent.service && systemctl start rke2-agent.service
