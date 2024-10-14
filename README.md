@@ -215,7 +215,7 @@ Now let's install Cert Manager with the following commands:
 # Create the Cert Manager Namespace and Install Cert Manager
 kubectl create namespace cert-manager
 
-helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set installCRDs=true
+helm upgrade -i cert-manager jetstack/cert-manager --namespace cert-manager --set crds.enabled=true
 
 # Wait for the deployment and rollout
 sleep 60
