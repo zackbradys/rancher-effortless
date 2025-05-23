@@ -48,7 +48,7 @@ If you would rather follow this guide with an awesome video... please click belo
 
 ## Infrastructure
 
-For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.1 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`.
+For this deployment, we need three linux servers to be able to get everything up and running. I will be using three virtualized Rocky Linux 9.5 servers, provisioned by [Rancher Harvester](https://harvesterhci.io). Any linux distribution should work perfectly fine, as long as there is network connectivity. Here's a list of our [supported operating systems](https://docs.rke2.io/install/requirements#operating-systems). In order to configure these servers for Rancher, we will need these servers to be internet connected and accessible from your local device via `ssh`.
 
 Here's an overview the architecture that we will be using for this deployment guide:
 
@@ -95,7 +95,7 @@ Now that the configuration file is completed, let's install and start the RKE2 C
 ```bash
 # server(s): rke2-cp-01
 # Download the RKE2 Control/Server
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.29 INSTALL_RKE2_TYPE=server sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.31 INSTALL_RKE2_TYPE=server sh -
 
 # Start the RKE2 Control/Server Service
 systemctl enable rke2-server.service && systemctl start rke2-server.service
@@ -157,7 +157,7 @@ Now that the configuration file is completed, let's install and start the RKE2 W
 ```bash
 # server(s): rke2-wk-01 and rke2-wk-02
 # Download the RKE2 Worker/Agent
-curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.29 INSTALL_RKE2_TYPE=agent sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.31 INSTALL_RKE2_TYPE=agent sh -
 
 # Start the RKE2 Worker/Agent Service
 systemctl enable rke2-agent.service && systemctl start rke2-agent.service
@@ -372,4 +372,4 @@ You now have Rancher NeuVector deployed on our RKE2 Kuberenetes Cluster with the
 
 In a few easy steps and a few minutes of your time, you have the core Rancher Stack deployed out and ready for use. I would say that statement alone is a very powerful considering the alternatives out there.
 
-If you have any issues with this deployment guide, please submit an issue or merge on this repo. Feel free to reach out to me as well!
+If you have any issues with this deployment guide, please submit an issue or PR on this repository. Feel free to reach out to me as well!
