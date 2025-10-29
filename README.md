@@ -59,8 +59,7 @@ Let's run the following commands on each of the nodes to ensure they have the ne
 ```bash
 # server(s): rke2-cp-01, rke2-wk-01, and rke2-wk-02
 # Install Packages
-yum install -y iptables container-selinux libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup
-yum install -y nfs-utils iscsi-initiator-utils; yum install -y zip zstd tree jq
+yum install -y iptables container-selinux libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
 
 # Modify Settings
 # Not required for every operating system
