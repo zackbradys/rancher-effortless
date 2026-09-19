@@ -4,7 +4,6 @@
 
 ### Table of Contents
 
-- [About Me](#about-me)
 - [Introduction](#introduction)
 - [Watch the Video](#watch-the-video)
 - [Infrastructure](#infrastructure)
@@ -13,16 +12,6 @@
 - [Rancher Longhorn](#rancher-longhorn)
 - [Rancher NeuVector](#rancher-neuvector)
 - [Final Thoughts](#final-thoughts)
-
-## About Me
-
-A little bit about me and my history in the industry. If you have any questions, please reach out to me at zhbrady@zackbrady.com!
-
-- Former Contractor
-- U.S. Military Reservist
-- Open-Source Contributor
-- Built and Exited a Digital Firm
-- Active Volunteer Firefighter/EMT
 
 ## Introduction
 
